@@ -1,16 +1,16 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>منصة معالجة القروض</title>
+  <title>الصفحة الرئيسية - منصة القروض</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap");
 
     :root {
       --primary: #17355a;
       --primary-glow: rgba(23, 53, 90, 0.7);
-      --secondary: #f5f5f5;
     }
 
     * {
@@ -21,53 +21,40 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f7f9;
+      background-color: white;
       color: #333;
+      text-align: center;
+      overflow: hidden;
     }
 
     header {
-      background-color: var(--primary);
-      color: white;
+      background-color: white;
       padding: 20px;
-      text-align: center;
-      position: relative;
     }
 
     header img {
       height: 80px;
-      margin-bottom: 10px;
     }
 
-    section {
-      padding: 50px 20px;
+    h1 {
+      margin-top: 10px;
+      font-family: "Orbitron", sans-serif;
+      color: var(--primary);
     }
 
     .hero {
-      text-align: center;
-      background: white;
-      min-height: 100vh;
+      height: 80vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      font-family: "Orbitron", sans-serif;
+      align-items: center;
       position: relative;
-      overflow: hidden;
-    }
-
-    .hero h1 {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 40px;
     }
 
     .trigger-container {
       position: relative;
       width: 300px;
       height: 300px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
     .outer-circle {
@@ -86,6 +73,38 @@
       animation-duration: 25s;
     }
 
+    .trigger-button {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(145deg, #f0f0f0, #ffffff);
+      border-radius: 50%;
+      border: none;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.1),
+        0 0 30px rgba(0, 0, 0, 0.1),
+        inset 0 0 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 2;
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .trigger-button::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 70%);
+      animation: pulse 2s infinite;
+      border-radius: 50%;
+      z-index: -1;
+    }
+
     .particles {
       position: absolute;
       width: 100%;
@@ -102,84 +121,6 @@
       opacity: 0;
     }
 
-    .trigger-button {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      background: linear-gradient(145deg, #f0f0f0, #ffffff);
-      border-radius: 50%;
-      border: none;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 0 30px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 2;
-      color: #17355a;
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .trigger-button.active::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 70%);
-      animation: pulse 2s infinite;
-      border-radius: 50%;
-      z-index: -1;
-    }
-
-    .status {
-      margin-top: 20px;
-      font-size: 1rem;
-      color: var(--primary);
-    }
-
-    .form-section {
-      background-color: #fff;
-      max-width: 700px;
-      margin: auto;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    .form-section h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: var(--primary);
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    input[type="text"], input[type="number"], input[type="file"], input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    button[type="submit"] {
-      width: 100%;
-      padding: 12px;
-      background-color: #007b9d;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button[type="submit"]:hover {
-      background-color: #005f7e;
-    }
-
     @keyframes rotate {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -190,127 +131,61 @@
       50% { transform: scale(1.1); opacity: 0.2; }
       100% { transform: scale(0.8); opacity: 0.5; }
     }
-
   </style>
 </head>
 <body>
-
   <header>
     <img src="https://www.sdb.gov.sa/sdb/media/sdb/sdblogo-ar.png" alt="SDB Logo">
-    <h1>منصة معالجة طلبات القروض</h1>
+    <h1>مرحلة الباحث</h1>
   </header>
 
-  <section id="home" class="hero">
-    <h1>مرحلة الباحث</h1>
+  <section class="hero">
     <div class="trigger-container">
       <div class="outer-circle"></div>
       <div class="outer-circle"></div>
-      <button class="trigger-button" id="triggerButton">ابدأ</button>
+      <button class="trigger-button" onclick="goToForm()">ابدأ</button>
       <div class="particles" id="particles"></div>
-    </div>
-    <div class="status" id="status">جاهز لإرسال طلب جديد</div>
-  </section>
-
-  <section id="form">
-    <div class="form-section">
-      <h2>نموذج تقديم لقرض الزواج</h2>
-      <form action="https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9" method="POST" enctype="multipart/form-data">
-        <label for="first-name">الاسم الأول</label>
-        <input type="text" id="first-name" name="first_name" required>
-        <label for="middle-name">اسم الأب</label>
-        <input type="text" id="middle-name" name="middle_name" required>
-        <label for="last-name">اسم العائلة</label>
-        <input type="text" id="last-name" name="last_name" required>
-        <label for="id-num">رقم الهوية (10 أرقام)</label>
-        <input type="number" id="id-num" name="id_num" required>
-        <label for="main-salary">الراتب الأساسي</label>
-        <input type="number" id="main-salary" name="main_salary" required>
-        <label for="allowance">البدلات</label>
-        <input type="number" id="allowance" name="allowance">
-        <label for="total-salary">إجمالي الراتب</label>
-        <input type="number" id="total-salary" name="total_salary" required>
-        <label for="job-title">المسمى الوظيفي</label>
-        <input type="text" id="job-title" name="job_title" required>
-        <label for="email">البريد الإلكتروني</label>
-        <input type="email" id="email" name="_replyto" required>
-        <label for="marriage-cert">شهادة الزواج</label>
-        <input type="file" id="marriage-cert" name="marriage_certificate" accept=".pdf,image/*" required>
-        <label for="salary-statement">تعريف بالراتب</label>
-        <input type="file" id="salary-statement" name="salary_statement" accept=".pdf,image/*" required>
-        <label for="family-id">كرت العائلة</label>
-        <input type="file" id="family-id" name="family_id" accept=".pdf,image/*" required>
-        <button type="submit">إرسال</button>
-      </form>
     </div>
   </section>
 
   <script>
-    const triggerButton = document.getElementById("triggerButton");
-    const statusText = document.getElementById("status");
-    const particlesContainer = document.getElementById("particles");
-    let isActive = false;
-
-    triggerButton.addEventListener("click", function () {
-      isActive = !isActive;
-
-      triggerButton.classList.toggle("active", isActive);
-      triggerButton.textContent = isActive ? "تم البدء" : "ابدأ";
-      statusText.textContent = isActive ? "جاري العمل" : "جاهز لإرسال طلب جديد";
-
+    function goToForm() {
       createParticles();
-
-      // Scroll to form after animation
       setTimeout(() => {
-        document.getElementById("form").scrollIntoView({ behavior: "smooth" });
-      }, 500);
-
-      // Trigger webhook (can be removed if not needed)
-      fetch("http://localhost:5678/webhook-test/bc33c57b-f90c-48ee-aa6b-ddb9c4c04046", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      }).catch(error => {
-        statusText.textContent = `خطأ: ${error.message}`;
-        isActive = false;
-        triggerButton.classList.remove("active");
-        triggerButton.textContent = "ابدأ";
-      });
-    });
+        window.location.href = "form.html";
+      }, 800);
+    }
 
     function createParticles() {
-      particlesContainer.innerHTML = "";
-      if (!isActive) return;
+      const container = document.getElementById("particles");
+      container.innerHTML = "";
       for (let i = 0; i < 30; i++) {
-        const particle = document.createElement("div");
-        particle.classList.add("particle");
+        const p = document.createElement("div");
+        p.classList.add("particle");
         const size = Math.random() * 5 + 2;
         const posX = Math.random() * 100;
         const posY = Math.random() * 100;
         const duration = Math.random() * 3 + 2;
         const delay = Math.random() * 2;
-
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${posX}%`;
-        particle.style.top = `${posY}%`;
-        particle.style.opacity = "0.8";
-        particle.style.transform = `translate(-50%, -50%)`;
-        particle.style.animation = `float ${duration}s ease-in ${delay}s infinite`;
-
-        particlesContainer.appendChild(particle);
-
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.left = `${posX}%`;
+        p.style.top = `${posY}%`;
+        p.style.opacity = "0.8";
+        p.style.transform = `translate(-50%, -50%)`;
+        p.style.animation = `float ${duration}s ease-in ${delay}s infinite`;
+        container.appendChild(p);
         const keyframes = `
           @keyframes float {
             0% { transform: translate(-50%, -50%); opacity: 0.8; }
             100% { transform: translate(-50%, -150%); opacity: 0; }
           }
         `;
-
         const style = document.createElement("style");
         style.innerHTML = keyframes;
         document.head.appendChild(style);
       }
     }
   </script>
-
 </body>
 </html>
