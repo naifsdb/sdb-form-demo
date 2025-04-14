@@ -1,145 +1,79 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>الصفحة الرئيسية - منصة القروض</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نموذج التقديم</title>
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap");
-
     :root {
       --primary: #17355a;
-      --primary-glow: rgba(23, 53, 90, 0.7);
-    }
-
-    * {
-      box-sizing: border-box;
-      scroll-behavior: smooth;
     }
 
     body {
-      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: white;
+      background-color: #f4f7f9;
       color: #333;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+      direction: rtl;
+      margin: 0;
     }
 
     header {
       background-color: white;
-      padding: 20px 0;
+      padding: 20px;
       text-align: center;
-    }
-
-    header a {
-      text-decoration: none;
     }
 
     header img {
       height: 100px;
-      cursor: pointer;
     }
 
     h1 {
-      margin: 10px 0 0;
-      font-family: "Orbitron", sans-serif;
+      color: var(--primary);
+      margin-top: 10px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
       color: var(--primary);
     }
 
-    .hero {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
     }
 
-    .trigger-container {
-      position: relative;
-      width: 300px;
-      height: 300px;
-    }
-
-    .outer-circle {
-      position: absolute;
+    input[type="text"], input[type="number"], input[type="file"], input[type="email"] {
       width: 100%;
-      height: 100%;
-      border: 2px solid rgba(23, 53, 90, 0.2);
-      border-radius: 50%;
-      animation: rotate 20s linear infinite;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
 
-    .outer-circle:nth-child(2) {
-      width: 90%;
-      height: 90%;
-      animation-direction: reverse;
-      animation-duration: 25s;
-    }
-
-    .trigger-button {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      background: linear-gradient(145deg, #f0f0f0, #ffffff);
-      border-radius: 50%;
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007b9d;
+      color: #fff;
       border: none;
-      box-shadow:
-        0 0 0 1px rgba(0, 0, 0, 0.1),
-        0 0 40px var(--primary-glow),
-        inset 0 0 20px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 2;
-      font-family: "Orbitron", sans-serif;
-      font-size: 1.5rem;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 2px;
     }
 
-    .trigger-button::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 70%);
-      animation: pulse 2s infinite;
-      border-radius: 50%;
-      z-index: -1;
-    }
-
-    .particles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .particle {
-      position: absolute;
-      background: var(--primary);
-      border-radius: 50%;
-      pointer-events: none;
-      opacity: 0.8;
-    }
-
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.8); opacity: 0.5; }
-      50% { transform: scale(1.1); opacity: 0.2; }
-      100% { transform: scale(0.8); opacity: 0.5; }
-    }
-
-    @keyframes float {
-      0% { transform: translate(-50%, -50%); opacity: 0.8; }
-      100% { transform: translate(-50%, -150%); opacity: 0; }
+    button:hover {
+      background-color: #005f7e;
     }
   </style>
 </head>
@@ -148,47 +82,43 @@
     <a href="index.html">
       <img src="https://www.sdb.gov.sa/sdb/media/sdb/sdblogo-ar.png" alt="SDB Logo">
     </a>
-    <h1>مرحلة الباحث</h1>
+    <h1>نموذج تقديم قرض الزواج</h1>
   </header>
 
-  <section class="hero">
-    <div class="trigger-container">
-      <div class="outer-circle"></div>
-      <div class="outer-circle"></div>
-      <button class="trigger-button" onclick="startAndRedirect()">ابدأ</button>
-      <div class="particles" id="particles"></div>
-    </div>
-  </section>
+  <div class="container">
+    <form action="https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9" method="POST" enctype="multipart/form-data">
+      <label for="name">الاسم</label>
+      <input type="text" id="name" name="name" required>
 
-  <script>
-    function startAndRedirect() {
-      createParticles();
-      setTimeout(() => {
-        window.location.href = "form.html";
-      }, 1200);
-    }
+      <label for="id-num">رقم الهوية (10 أرقام)</label>
+      <input type="number" id="id-num" name="id_num" required>
 
-    function createParticles() {
-      const container = document.getElementById("particles");
-      container.innerHTML = "";
-      for (let i = 0; i < 30; i++) {
-        const p = document.createElement("div");
-        p.classList.add("particle");
-        const size = Math.random() * 5 + 2;
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        const duration = Math.random() * 3 + 2;
-        const delay = Math.random() * 1;
+      <label for="main-salary">الراتب الأساسي</label>
+      <input type="number" id="main-salary" name="main_salary" required>
 
-        p.style.width = `${size}px`;
-        p.style.height = `${size}px`;
-        p.style.left = `${posX}%`;
-        p.style.top = `${posY}%`;
-        p.style.animation = `float ${duration}s ease-in ${delay}s forwards`;
+      <label for="allowance">البدلات</label>
+      <input type="number" id="allowance" name="allowance">
 
-        container.appendChild(p);
-      }
-    }
-  </script>
+      <label for="total-salary">إجمالي الراتب</label>
+      <input type="number" id="total-salary" name="total_salary" required>
+
+      <label for="job-title">المسمى الوظيفي</label>
+      <input type="text" id="job-title" name="job_title" required>
+
+      <label for="email">البريد الإلكتروني</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="marriage-cert">شهادة الزواج</label>
+      <input type="file" id="marriage-cert" name="marriage_certificate" accept=".pdf,image/*" required>
+
+      <label for="salary-statement">تعريف بالراتب</label>
+      <input type="file" id="salary-statement" name="salary_statement" accept=".pdf,image/*" required>
+
+      <label for="family-id">كرت العائلة</label>
+      <input type="file" id="family-id" name="family_id" accept=".pdf,image/*" required>
+
+      <button type="submit">إرسال</button>
+    </form>
+  </div>
 </body>
 </html>
