@@ -101,13 +101,17 @@
       background-color: #005f7e;
     }
 
-    #responseMessage {
+    #responseBox {
+      margin-top: 30px;
       text-align: center;
-      font-weight: bold;
-      margin-top: 25px;
-      font-size: 18px;
+    }
+
+    .message-box {
       padding: 15px;
-      border-radius: 8px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 18px;
       display: none;
     }
 
@@ -129,6 +133,16 @@
       border: 1px solid #ffc107;
     }
 
+    .agent-message {
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      color: #333;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+    }
+
     @media (max-width: 600px) {
       .container {
         margin: 20px;
@@ -147,14 +161,8 @@
 
   <div class="container">
     <form id="loanForm" enctype="multipart/form-data">
-      <label for="first-name">الاسم الأول</label>
-      <input type="text" id="first-name" name="first_name" required />
-
-      <label for="middle-name">اسم الأب</label>
-      <input type="text" id="middle-name" name="middle_name" required />
-
-      <label for="last-name">اسم العائلة</label>
-      <input type="text" id="last-name" name="last_name" required />
+      <label for="name">الاسم</label>
+      <input type="text" id="name" name="name" required />
 
       <label for="id-num">رقم الهوية (10 أرقام)</label>
       <input type="number" id="id-num" name="id_num" required />
@@ -172,7 +180,7 @@
       <input type="text" id="job-title" name="job_title" required />
 
       <label for="email">البريد الإلكتروني</label>
-      <input type="email" id="email" name="_replyto" required />
+      <input type="email" id="email" name="email" required />
 
       <label for="marriage-cert">شهادة الزواج</label>
       <input type="file" id="marriage-cert" name="marriage_certificate" accept=".pdf,image/*" required />
@@ -184,22 +192,29 @@
       <input type="file" id="family-id" name="family_id" accept=".pdf,image/*" required />
 
       <button type="submit">إرسال</button>
-      <div id="responseMessage"></div>
+
+      <div id="responseBox">
+        <div id="decisionMessage" class="message-box"></div>
+        <div id="agentMessage" class="agent-message"></div>
+      </div>
     </form>
   </div>
 
   <script>
     const form = document.getElementById("loanForm");
-    const responseMessage = document.getElementById("responseMessage");
+    const decisionMessage = document.getElementById("decisionMessage");
+    const agentMessage = document.getElementById("agentMessage");
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const formData = new FormData(form);
 
-      // Reset message display
-      responseMessage.style.display = "none";
-      responseMessage.className = "";
+      // Reset messages
+      decisionMessage.style.display = "none";
+      agentMessage.style.display = "none";
+      decisionMessage.className = "message-box";
+      agentMessage.innerText = "";
 
       try {
         const response = await fetch("https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9", {
@@ -209,22 +224,30 @@
 
         const result = await response.json();
 
-        responseMessage.style.display = "block";
+        // Show main decision
+        decisionMessage.style.display = "block";
 
         if (result.approved === true) {
-          responseMessage.innerText = "✅ تمت الموافقة على القرض";
-          responseMessage.classList.add("approved");
+          decisionMessage.innerText = "✅ تمت مطابقة الشروط";
+          decisionMessage.classList.add("approved");
         } else if (result.approved === false) {
-          responseMessage.innerText = "❌ تم رفض القرض";
-          responseMessage.classList.add("denied");
+          decisionMessage.innerText = "❌ لم يتم موافقة الشروط";
+          decisionMessage.classList.add("denied");
         } else {
-          responseMessage.innerText = "❕ لم يتم استلام نتيجة واضحة.";
-          responseMessage.classList.add("unclear");
+          decisionMessage.innerText = "❕ لم يتم استلام نتيجة واضحة.";
+          decisionMessage.classList.add("unclear");
         }
+
+        // Show optional agent message
+        if (result.message) {
+          agentMessage.innerText = result.message;
+          agentMessage.style.display = "block";
+        }
+
       } catch (error) {
-        responseMessage.innerText = "⚠️ حدث خطأ أثناء إرسال الطلب.";
-        responseMessage.classList.add("denied");
-        responseMessage.style.display = "block";
+        decisionMessage.innerText = " تم ارسال الطلب يرجى الانتظار";
+        decisionMessage.classList.add("denied");
+        decisionMessage.style.display = "block";
       }
     });
   </script>
