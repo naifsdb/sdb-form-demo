@@ -234,7 +234,7 @@
           decisionMessage.innerText = "❌ لم يتم موافقة الشروط";
           decisionMessage.classList.add("denied");
         } else {
-          decisionMessage.innerText = "❕ لم يتم استلام نتيجة واضحة.";
+          decisionMessage.innerText = "❕ تم ارسال الطلب يرجى الانتظار";
           decisionMessage.classList.add("unclear");
         }
 
@@ -245,9 +245,8 @@
         }
 
       } catch (error) {
-        decisionMessage.innerText = " تم ارسال الطلب يرجى الانتظار";
-        decisionMessage.classList.add("denied");
-        decisionMessage.style.display = "block";
+        decisionMessage.innerText = "❕ تم ارسال الطلب يرجى الانتظار";
+        decisionMessage.classList.add("unclear");
       }
     });
   </script>
