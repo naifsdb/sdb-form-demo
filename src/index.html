@@ -1,17 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Vanilla JavaScript App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج تقديم</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            direction: rtl;
+            padding: 30px;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #012b4a;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], input[type="file"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007b9d;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005f7e;
+        }
+    </style>
 </head>
-
 <body>
-  <main>
-    <h1>Vanilla JavaScript App</h1>
-  </main>
-</body>
+    <div class="container">
+        <h2>نموذج تقديم البيانات</h2>
+        <form action="https://formspree.io/f/mwkgrxyz" method="POST" enctype="multipart/form-data">
+            <label for="first-name">الاسم الأول</label>
+            <input type="text" id="first-name" name="first_name" required>
 
+            <label for="middle-name">اسم الأب</label>
+            <input type="text" id="middle-name" name="middle_name" required>
+
+            <label for="last-name">اسم العائلة</label>
+            <input type="text" id="last-name" name="last_name" required>
+
+            <label for="id-num">رقم الهوية (10 أرقام)</label>
+            <input type="number" id="id-num" name="id_num" pattern="\d{10}" required>
+
+            <label for="main-salary">الراتب الأساسي</label>
+            <input type="number" id="main-salary" name="main_salary" required>
+
+            <label for="allowance">البدلات</label>
+            <input type="number" id="allowance" name="allowance">
+
+            <label for="total-salary">إجمالي الراتب</label>
+            <input type="number" id="total-salary" name="total_salary" required>
+
+            <label for="job-title">المسمى الوظيفي</label>
+            <input type="text" id="job-title" name="job_title" required>
+
+            <label for="email">البريد الإلكتروني</label>
+            <input type="email" id="email" name="_replyto" required>
+
+            <label for="marriage-cert">شهادة الزواج (PDF أو صورة)</label>
+            <input type="file" id="marriage-cert" name="marriage_certificate" accept=".pdf, image/*" required>
+
+            <label for="salary-statement">تعريف بالراتب (PDF أو صورة)</label>
+            <input type="file" id="salary-statement" name="salary_statement" accept=".pdf, image/*" required>
+
+            <label for="family-id">كرت العائلة (PDF أو صورة)</label>
+            <input type="file" id="family-id" name="family_id" accept=".pdf, image/*" required>
+
+            <button type="submit">إرسال</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>نموذج استعلام البيانات</h2>
+        <form method="GET">
+            <label for="query-id">رقم الهوية</label>
+            <input type="text" id="query-id" name="id_query" placeholder="أدخل رقم الهوية">
+            <button type="submit">بحث</button>
+        </form>
+        <div>
+            <h3>نتائج الاستعلام:</h3>
+            <script>
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get("id_query");
+                if (id) {
+                    document.write(`<p>تم إدخال رقم الهوية: <strong>${id}</strong></p>`);
+                } else {
+                    document.write("<p>لم يتم إدخال أي رقم هوية بعد.</p>");
+                }
+            </script>
+        </div>
+    </div>
+</body>
 </html>
