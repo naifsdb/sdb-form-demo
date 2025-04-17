@@ -1,35 +1,22 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نموذج تقديم قرض تميز الشركات</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نموذج قرض تميز الشركات</title>
   <style>
-    :root {
-      --primary: #17355a;
-      --accent: #007b9d;
-      --background: #f4f7f9;
-      --white: #ffffff;
-      --shadow: rgba(0, 0, 0, 0.05);
-      --border: #e0e0e0;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      background-color: var(--background);
+      background-color: #f4f7f9;
       color: #333;
     }
 
     header {
-      background-color: var(--white);
+      background-color: #fff;
       padding: 20px 0;
       text-align: center;
-      box-shadow: 0 2px 8px var(--shadow);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     header img {
@@ -39,23 +26,23 @@
     h1 {
       margin-top: 10px;
       font-size: 24px;
-      color: var(--primary);
+      color: #17355a;
     }
 
     .container {
       max-width: 700px;
       margin: 40px auto;
-      background-color: var(--white);
+      background: #fff;
       padding: 40px 30px;
       border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     }
 
     label {
       display: block;
       margin-bottom: 6px;
       font-weight: 600;
-      color: var(--primary);
+      color: #17355a;
     }
 
     input[type="text"],
@@ -65,33 +52,21 @@
       width: 100%;
       padding: 12px;
       margin-bottom: 20px;
-      border: 1px solid var(--border);
+      border: 1px solid #e0e0e0;
       border-radius: 8px;
       background-color: #fafafa;
-      transition: border 0.3s ease;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: var(--accent);
-      background-color: #fff;
     }
 
     button {
       width: 100%;
       padding: 14px;
-      background-color: var(--accent);
-      color: var(--white);
+      background-color: #007b9d;
+      color: #fff;
       border: none;
       border-radius: 8px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #005f7e;
     }
 
     #responseBox {
@@ -100,12 +75,10 @@
     }
 
     .message-box {
-      padding: 18px 20px;
+      padding: 18px;
       border-radius: 10px;
-      margin-top: 15px;
-      font-size: 17px;
-      line-height: 1.8;
       display: none;
+      font-size: 17px;
       white-space: pre-wrap;
     }
 
@@ -131,30 +104,30 @@
 <body>
   <header>
     <a href="index.html">
-      <img src="https://www.sdb.gov.sa/sdb/media/sdb/sdblogo-ar.png" alt="SDB Logo">
+      <img src="https://www.sdb.gov.sa/sdb/media/sdb/sdblogo-ar.png" alt="SDB Logo" />
     </a>
-    <h1>نموذج تقديم قرض تميز الشركات</h1>
+    <h1>نموذج قرض تميز الشركات</h1>
   </header>
 
   <div class="container">
     <form id="taxForm" enctype="multipart/form-data">
-      <label for="name">صورة الهوية</label>
-      <input type="text" id="name" name="entity_name" required>
+      <label>صورة الهوية</label>
+      <input type="text" name="entity_name" required>
 
-      <label for="id-number">صورة من السجل التجاري</label>
-      <input type="number" id="id-number" name="commercial_id" required>
+      <label>صورة من السجل التجاري</label>
+      <input type="number" name="commercial_id" required>
 
-      <label for="email">عقد التأسيس</label>
-      <input type="email" id="email" name="email" required>
+      <label>عقد التأسيس</label>
+      <input type="email" name="email" required>
 
-      <label for="tax-period">قوائم مالية داخلية</label>
-      <input type="text" id="tax-period" name="tax_period" required>
+      <label>قوائم مالية داخلية</label>
+      <input type="text" name="tax_period" required>
 
-      <label for="vat">اقرارات ضريبية</label>
-      <input type="number" id="vat" name="vat_amount" required>
+      <label>اقرارات ضريبية</label>
+      <input type="number" name="vat_amount" required>
 
-      <label for="declaration">رخصة مزاولة النشاط</label>
-      <input type="file" id="declaration" name="tax_declaration_file" accept=".pdf,image/*" required>
+      <label>رخصة مزاولة النشاط</label>
+      <input type="file" name="tax_declaration_file" accept=".pdf,image/*" required>
 
       <button type="submit">إرسال</button>
 
@@ -172,15 +145,14 @@
       e.preventDefault();
 
       const formData = new FormData(form);
-
       decisionMessage.style.display = "none";
       decisionMessage.className = "message-box";
       decisionMessage.innerText = "";
 
       try {
-        const response = await fetch("https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9", {
+        const response = await fetch("https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/97b45703-0fdd-4da5-89a3-0dbfe0f5378d", {
           method: "POST",
-          body: formData
+          body: formData,
         });
 
         const result = await response.json();
@@ -188,16 +160,11 @@
 
         if (result.status === true) {
           decisionMessage.classList.add("approved");
-          decisionMessage.innerText = "✅ تمت مطابقة الشروط";
-        } else if (result.status === false) {
+          decisionMessage.innerText = "✅ تمت مطابقة الشروط" + (result.message ? "\n\n" + result.message : "");
+        } else {
           decisionMessage.classList.add("denied");
-          decisionMessage.innerText = "❌ لم تتم مطابقة الشروط";
+          decisionMessage.innerText = "❌ لم تتم مطابقة الشروط" + (result.message ? "\n\n" + result.message : "");
         }
-
-        if (result.message) {
-          decisionMessage.innerText += `\n\n${result.message}`;
-        }
-
       } catch (error) {
         decisionMessage.style.display = "block";
         decisionMessage.classList.add("unclear");
