@@ -99,24 +99,6 @@
       color: #ff8f00;
       border: 1px solid #ffc107;
     }
-    
-    .loading {
-      display: none;
-      margin: 20px auto;
-      text-align: center;
-    }
-    
-    .loading:after {
-      content: " .";
-      animation: dots 1.5s steps(5, end) infinite;
-    }
-    
-    @keyframes dots {
-      0%, 20% { content: " ."; }
-      40% { content: " .."; }
-      60% { content: " ..."; }
-      80%, 100% { content: " ...."; }
-    }
   </style>
 </head>
 <body>
@@ -127,137 +109,89 @@
     <h1>نموذج تقديم قرض تميز الشركات</h1>
   </header>
 
+
   <div class="container">
     <form id="loanForm" enctype="multipart/form-data">
 
-      <label> اقرارات ضريبية الربع الأول</label>
-      <input type="file" name="bank_statement_q1" accept=".pdf,image/*" >
-
-
-      <label> اقرارات ضريبية الربع الثاني</label>
-      <input type="file" name="bank_statement_q2" accept=".pdf,image/*" >
-     
-      <label> اقرارات ضريبية الربع الثالث</label>
-      <input type="file" name="bank_statement_q3" accept=".pdf,image/*" >
-     
-      <label> اقرارات ضريبية الربع الرابع</label>
-      <input type="file" name="bank_statement_q4" accept=".pdf,image/*" >
-
-      <button type="submit" id="submitBtn">إرسال</button>
+      <label>اقرارات ضريبية الربع الاول</label>
+      <input type="file" name="tax_decleration_q1" accept=".pdf,image/*">
+      <label>اقرارات ضريبية الربع الثاني</label>
+      <input type="file" name="tax_decleration_q2" accept=".pdf,image/*">
       
-      <div class="loading" id="loadingIndicator">جاري إرسال الطلب</div>
+      <label>اقرارات ضريبية الربع الثالث</label>
+      <input type="file" name="tax_decleration_q3" accept=".pdf,image/*">
+      
+      <label>اقرارات ضريبية الربع الرابع</label>
+      <input type="file" name="tax_decleration_q4" accept=".pdf,image/*">
 
+  
+      <button type="submit">إرسال</button>
+  
       <div id="responseBox">
         <div id="decisionMessage" class="message-box"></div>
       </div>
     </form>
   </div>
 
+
   <script>
     const form = document.getElementById("loanForm");
     const decisionMessage = document.getElementById("decisionMessage");
-    const submitBtn = document.getElementById("submitBtn");
-    const loadingIndicator = document.getElementById("loadingIndicator");
   
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-      
-      // Check if all required fields are filled
-      const requiredFields = form.querySelectorAll('[required]');
-      let allFieldsFilled = true;
-      
-      requiredFields.forEach(field => {
-        if (field.type === 'file' && field.files.length === 0) {
-          allFieldsFilled = false;
-        } else if (field.value.trim() === '') {
-          allFieldsFilled = false;
-        }
-      });
-      
-      if (!allFieldsFilled) {
-        decisionMessage.style.display = "block";
-        decisionMessage.className = "message-box unclear";
-        decisionMessage.innerText = "⚠️ يرجى ملء جميع الحقول المطلوبة";
-        return;
-      }
-      
-      // Disable submit button and show loading indicator
-      submitBtn.disabled = true;
-      loadingIndicator.style.display = "block";
+  
+      const formData = new FormData(form);
   
       // Reset messages
       decisionMessage.style.display = "none";
       decisionMessage.className = "message-box";
       decisionMessage.innerText = "";
   
-      // List of webhook URLs
+      // List of webhook URLs including tax one
       const urls = [
-        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook/06b4d59b-65f6-43f7-b233-f74a58fabbb9",
-        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9"
+        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/a198a588-9cbb-44b7-92ec-5f339e1d70a1",
+        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook/a198a588-9cbb-44b7-92ec-5f339e1d70a1" // TAX webhook
       ];
   
       try {
-        // Send to each URL individually with error handling
-        let firstSuccessfulResponse = null;
-        
-        for (const url of urls) {
-          try {
-            const freshFormData = new FormData(form);
-            const response = await fetch(url, {
-              method: "POST",
-              body: freshFormData,
-              // No need for mode: 'cors' since it's the default for cross-origin requests
-            });
-            
-            if (response.ok) {
-              const responseData = await response.json();
-              console.log(`Success response from ${url}:`, responseData);
-              
-              // Store the first successful response for display
-              if (!firstSuccessfulResponse) {
-                firstSuccessfulResponse = responseData;
-              }
-            } else {
-              console.warn(`Error response from ${url}: ${response.status} ${response.statusText}`);
-            }
-          } catch (individualError) {
-            console.error(`Failed to send to ${url}:`, individualError);
-            // Continue to the next URL even if this one failed
-          }
-        }
-        
-        // Handle display based on the first successful response
-        if (firstSuccessfulResponse) {
-          decisionMessage.style.display = "block";
-          
-          if (firstSuccessfulResponse.approved === true) {
-            decisionMessage.classList.add("approved");
-            decisionMessage.innerText = "✅ تمت مطابقة الشروط";
-          } else if (firstSuccessfulResponse.approved === false) {
-            decisionMessage.classList.add("denied");
-            decisionMessage.innerText = "❌ لم تتم مطابقة الشروط";
-          } else {
-            decisionMessage.classList.add("unclear");
-            decisionMessage.innerText = "⚠️ تم استلام الطلب وسيتم مراجعته";
-          }
-          
-          if (firstSuccessfulResponse.message) {
-            decisionMessage.innerText += `\n\n${firstSuccessfulResponse.message}`;
-          }
-        } else {
-          // No successful responses
-          throw new Error("No successful responses from any endpoint");
+        // Send to all URLs using fresh FormData for each
+        const requests = urls.map(url => {
+          const freshFormData = new FormData(form);
+          return fetch(url, {
+            method: "POST",
+            body: freshFormData,
+          });
+        });
+  
+        const responses = await Promise.all(requests);
+        const result = await responses[0].json(); // Use first response for user display
+  
+        decisionMessage.style.display = "block";
+  
+        if (result.approved === true) {
+          decisionMessage.classList.add("approved");
+          decisionMessage.innerText = "✅ تمت مطابقة الشروط";
+        } else if (result.approved === false) {
+          decisionMessage.classList.add("denied");
+          decisionMessage.innerText = "❌ لم تتم مطابقة الشروط";
         }
   
+        if (result.message) {
+          decisionMessage.innerText += "\n\n" + result.message;
+        }
+  
+        // Optional: Debugging responses from all webhooks
+        // responses.forEach(async (res, index) => {
+        //   const text = await res.text();
+        //   console.log(`Response ${index + 1}:`, text);
+        // });
+  
       } catch (error) {
-        console.error("Error during form submission:", error);
         decisionMessage.style.display = "block";
         decisionMessage.classList.add("unclear");
-        decisionMessage.innerText = "⚠️ حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى لاحقًا.";
-      } finally {
-        // Re-enable submit button and hide loading indicator
-        submitBtn.disabled = false;
-        loadingIndicator.style.display = "none";
+        decisionMessage.innerText = "⚠️ جاري معالجة الطلب";
+        console.error("Error during form submission:", error);
       }
     });
   </script>
