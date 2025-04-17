@@ -226,13 +226,14 @@
 
         decisionMessage.style.display = "block";
 
-        if (result.approved === true) {
+        if (result.status === true) {
           decisionMessage.classList.add("approved");
           decisionMessage.innerText = "✅ تمت مطابقة الشروط";
-        } else if (result.approved === false) {
+        } else if (result.status === false) {
           decisionMessage.classList.add("denied");
           decisionMessage.innerText = "❌ لم تتم مطابقة الشروط";
         }
+
 
         if (result.message) {
           decisionMessage.innerText += `\n\n${result.message}`;
