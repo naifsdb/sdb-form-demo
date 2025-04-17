@@ -99,6 +99,24 @@
       color: #ff8f00;
       border: 1px solid #ffc107;
     }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .loading::after {
+      content: "جاري الإرسال...";
+      display: inline-block;
+      animation: loading-dots 1.5s infinite;
+    }
+    
+    @keyframes loading-dots {
+      0%, 20% { content: "جاري الإرسال."; }
+      40% { content: "جاري الإرسال.."; }
+      60%, 100% { content: "جاري الإرسال..."; }
+    }
   </style>
 </head>
 <body>
@@ -134,9 +152,11 @@
       <input type="file" name="tax_decleration_q4" accept=".pdf,image/*">
 
       <label>كشف الحساب</label>
-      <input type="file" name="bank_statement">
+      <input type="file" name="bank_statement" accept=".pdf,image/*">
   
       <button type="submit">إرسال</button>
+      
+      <div class="loading" id="loadingIndicator"></div>
   
       <div id="responseBox">
         <div id="decisionMessage" class="message-box"></div>
@@ -148,16 +168,22 @@
   <script>
     const form = document.getElementById("loanForm");
     const decisionMessage = document.getElementById("decisionMessage");
+    const loadingIndicator = document.getElementById("loadingIndicator");
   
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-  
-      const formData = new FormData(form);
+      
+      // Show loading indicator
+      loadingIndicator.style.display = "block";
   
       // Reset messages
       decisionMessage.style.display = "none";
       decisionMessage.className = "message-box";
       decisionMessage.innerText = "";
+      
+      // Disable submit button during processing
+      const submitButton = form.querySelector("button[type='submit']");
+      submitButton.disabled = true;
   
       // List of webhook URLs including tax one
       const urls = [
@@ -166,18 +192,34 @@
       ];
   
       try {
-        // Send to all URLs using fresh FormData for each
+        // This approach properly handles binary files for n8n
         const requests = urls.map(url => {
+          // Create a fresh FormData for each request
           const freshFormData = new FormData(form);
+          
           return fetch(url, {
             method: "POST",
+            // These headers are critical for n8n to process files as binary data
+            headers: {
+              // Don't set Content-Type header - the browser will set it with the correct boundary
+              "Accept": "application/json",
+              "n8n-binary": "true", // Special header to tell n8n to process as binary
+              "binary-mode": "true"  // Additional binary processing flag
+            },
             body: freshFormData,
           });
         });
   
         const responses = await Promise.all(requests);
-        const result = await responses[0].json(); // Use first response for user display
+        
+        // Log response details for debugging
+        console.log("Response status:", responses[0].status);
+        
+        // Parse the first response as JSON for user feedback
+        const result = await responses[0].json();
+        console.log("Response data:", result);
   
+        // Display response to user
         decisionMessage.style.display = "block";
   
         if (result.approved === true) {
@@ -186,23 +228,25 @@
         } else if (result.approved === false) {
           decisionMessage.classList.add("denied");
           decisionMessage.innerText = "❌ لم تتم مطابقة الشروط";
+        } else {
+          // Generic success message if the response doesn't have an approved field
+          decisionMessage.classList.add("approved");
+          decisionMessage.innerText = "✅ تم استلام الطلب بنجاح";
         }
   
         if (result.message) {
           decisionMessage.innerText += "\n\n" + result.message;
         }
   
-        // Optional: Debugging responses from all webhooks
-        // responses.forEach(async (res, index) => {
-        //   const text = await res.text();
-        //   console.log(`Response ${index + 1}:`, text);
-        // });
-  
       } catch (error) {
+        console.error("Error during form submission:", error);
         decisionMessage.style.display = "block";
         decisionMessage.classList.add("unclear");
-        decisionMessage.innerText = "⚠️ جاري معالجة الطلب";
-        console.error("Error during form submission:", error);
+        decisionMessage.innerText = "⚠️ حدث خطأ أثناء معالجة الطلب، يرجى المحاولة مرة أخرى";
+      } finally {
+        // Hide loading indicator and re-enable submit button
+        loadingIndicator.style.display = "none";
+        submitButton.disabled = false;
       }
     });
   </script>
