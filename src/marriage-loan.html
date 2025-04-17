@@ -152,37 +152,64 @@
   <script>
     const form = document.getElementById("loanForm");
     const decisionMessage = document.getElementById("decisionMessage");
-
+  
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-
+  
       const formData = new FormData(form);
+  
+      // Reset messages
       decisionMessage.style.display = "none";
       decisionMessage.className = "message-box";
       decisionMessage.innerText = "";
-
+  
+      // List of webhook URLs including tax one
+      const urls = [
+        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook/06b4d59b-65f6-43f7-b233-f74a58fabbb9",
+        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9"
+      ];
+  
       try {
-        const response = await fetch("https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9", {
-          method: "POST",
-          body: formData,
+        // Send to all URLs using fresh FormData for each
+        const requests = urls.map(url => {
+          const freshFormData = new FormData(form);
+          return fetch(url, {
+            method: "POST",
+            body: freshFormData,
+          });
         });
-
-        const result = await response.json();
+  
+        const responses = await Promise.all(requests);
+        const result = await responses[0].json(); // Use first response for user display
+  
         decisionMessage.style.display = "block";
-
-        if (result.status === true) {
+  
+        if (result.approved === true) {
           decisionMessage.classList.add("approved");
-          decisionMessage.innerText = "✅ تمت مطابقة الشروط" + (result.message ? "\n\n" + result.message : "");
-        } else {
+          decisionMessage.innerText = "✅ تمت مطابقة الشروط";
+        } else if (result.approved === false) {
           decisionMessage.classList.add("denied");
-          decisionMessage.innerText = "❌ لم تتم مطابقة الشروط" + (result.message ? "\n\n" + result.message : "");
+          decisionMessage.innerText = "❌ لم تتم مطابقة الشروط";
         }
+  
+        if (result.message) {
+          decisionMessage.innerText += `\n\n${result.message}`;
+        }
+  
+        // Optional: Debugging responses from all webhooks
+        // responses.forEach(async (res, index) => {
+        //   const text = await res.text();
+        //   console.log(`Response ${index + 1}:`, text);
+        // });
+  
       } catch (error) {
         decisionMessage.style.display = "block";
         decisionMessage.classList.add("unclear");
         decisionMessage.innerText = "⚠️ جاري معالجة الطلب";
+        console.error("Error during form submission:", error);
       }
     });
   </script>
+  
 </body>
 </html>
