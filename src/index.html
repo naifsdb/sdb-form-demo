@@ -153,34 +153,37 @@
   <div class="container">
     <form id="loanForm" enctype="multipart/form-data">
       <label for="name">الاسم</label>
-      <input type="text" id="name" name="name" required />
+      <input type="text" id="name" name="name" />
 
       <label for="id-num">رقم الهوية (10 أرقام)</label>
-      <input type="number" id="id-num" name="id_num" required />
+      <input type="number" id="id-num" name="id_num" />
 
       <label for="main-salary">الراتب الأساسي</label>
-      <input type="number" id="main-salary" name="main_salary" required />
+      <input type="number" id="main-salary" name="main_salary" />
 
       <label for="allowance">البدلات</label>
       <input type="number" id="allowance" name="allowance" />
 
       <label for="total-salary">إجمالي الراتب</label>
-      <input type="number" id="total-salary" name="total_salary" required />
+      <input type="number" id="total-salary" name="total_salary" />
 
       <label for="job-title">المسمى الوظيفي</label>
-      <input type="text" id="job-title" name="job_title" required />
+      <input type="text" id="job-title" name="job_title" />
 
       <label for="email">البريد الإلكتروني</label>
-      <input type="email" id="email" name="_replyto" required />
+      <input type="email" id="email" name="_replyto" />
 
       <label for="marriage-cert">شهادة الزواج</label>
-      <input type="file" id="marriage-cert" name="marriage_certificate" accept=".pdf,image/*" required />
+      <input type="file" id="marriage-cert" name="marriage_certificate" accept=".pdf,image/*" />
 
       <label for="salary-statement">تعريف بالراتب</label>
-      <input type="file" id="salary-statement" name="salary_statement" accept=".pdf,image/*" required />
+      <input type="file" id="salary-statement" name="salary_statement" accept=".pdf,image/*" />
 
       <label for="family-id">كرت العائلة</label>
-      <input type="file" id="family-id" name="family_id" accept=".pdf,image/*" required />
+      <input type="file" id="family-id" name="family_id" accept=".pdf,image/*" />
+
+      <label for="tax-declaration">الاقرارات الضريبية</label>
+      <input type="file" id="tax-declaration" name="tax_declaration" accept=".pdf,image/*" />
 
       <button type="submit">إرسال</button>
 
