@@ -111,7 +111,7 @@
 
 
   <div class="container">
-    <form id="taxForm" enctype="multipart/form-data">
+    <form id="loanForm" enctype="multipart/form-data">
       <label>صورة الهوية</label>
       <input type="file" name="id">
   
@@ -189,7 +189,7 @@
         }
   
         if (result.message) {
-          decisionMessage.innerText += `\n\n${result.message}`;
+          decisionMessage.innerText += "\n\n" + result.message;
         }
   
         // Optional: Debugging responses from all webhooks
