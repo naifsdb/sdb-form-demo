@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نموذج تقديم قرض الزواج</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html">
+      <img src="https://www.sdb.gov.sa/sdb/media/sdb/sdblogo-ar.png" alt="SDB Logo" style="height:90px;" />
+    </a>
+    <h1 style="text-align:center;color:#17355a;font-size:24px;margin-top:10px;">نموذج تقديم قرض الزواج</h1>
+  </header>
+
+  <div class="container" style="max-width:700px;margin:40px auto;background:#fff;padding:40px 30px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.06);">
+    <form id="loanForm" enctype="multipart/form-data">
+      <label for="name">الاسم</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="id-num">رقم الهوية (10 أرقام)</label>
+      <input type="number" id="id-num" name="id_num" required>
+
+      <label for="main-salary">الراتب الأساسي</label>
+      <input type="number" id="main-salary" name="main_salary" required>
+
+      <label for="allowance">البدلات</label>
+      <input type="number" id="allowance" name="allowance">
+
+      <label for="total-salary">إجمالي الراتب</label>
+      <input type="number" id="total-salary" name="total_salary" required>
+
+      <label for="job-title">المسمى الوظيفي</label>
+      <input type="text" id="job-title" name="job_title" required>
+
+      <label for="email">البريد الإلكتروني</label>
+      <input type="email" id="email" name="_replyto" required>
+
+      <label for="marriage-cert">شهادة الزواج</label>
+      <input type="file" id="marriage-cert" name="marriage_certificate" accept=".pdf,image/*" required>
+
+      <label for="salary-statement">تعريف بالراتب</label>
+      <input type="file" id="salary-statement" name="salary_statement" accept=".pdf,image/*" required>
+
+      <label for="family-id">كرت العائلة</label>
+      <input type="file" id="family-id" name="family_id" accept=".pdf,image/*" required>
+
+      <label for="tax-declaration">الاقرارات الضريبية</label>
+      <input type="file" id="tax-declaration" name="tax_declaration" accept=".pdf,image/*" required>
+
+      <button type="submit" style="width:100%;padding:14px;background:#007b9d;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">إرسال</button>
+
+      <div id="responseBox" style="margin-top:30px;text-align:center;">
+        <div id="decisionMessage" class="message-box" style="padding:18px 20px;border-radius:10px;margin-top:15px;font-size:17px;line-height:1.8;display:none;white-space:pre-wrap;"></div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("loanForm");
+    const decisionMessage = document.getElementById("decisionMessage");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      decisionMessage.style.display = "none";
+      decisionMessage.className = "message-box";
+      decisionMessage.innerText = "";
+
+      const urls = [
+        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook/06b4d59b-65f6-43f7-b233-f74a58fabbb9",
+        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/06b4d59b-65f6-43f7-b233-f74a58fabbb9"
+      ];
+
+      try {
+        const requests = urls.map(url => {
+          const freshFormData = new FormData(form);
+          return fetch(url, {
+            method: "POST",
+            body: freshFormData,
+          });
+        });
+
+        const responses = await Promise.all(requests);
+        const result = await responses[0].json();
+
+        decisionMessage.style.display = "block";
+
+        if (result.status === true) {
+          decisionMessage.classList.add("approved");
+          decisionMessage.innerText = "✅ تمت مطابقة الشروط";
+        } else if (result.status === false) {
+          decisionMessage.classList.add("denied");
+          decisionMessage.innerText = "❌ لم تتم مطابقة الشروط";
+        }
+
+        if (result.message) {
+          decisionMessage.innerText += `\n\n${result.message}`;
+        }
+
+      } catch (error) {
+        decisionMessage.style.display = "block";
+        decisionMessage.classList.add("unclear");
+        decisionMessage.innerText = "⚠️ جاري معالجة الطلب";
+      }
+    });
+  </script>
+</body>
+</html>
