@@ -106,48 +106,38 @@
     <a href="index.html">
       <img src="https://www.sdb.gov.sa/sdb/media/sdb/sdblogo-ar.png" alt="SDB Logo" />
     </a>
-    <h1>نموذج تقديم قرض الزواج</h1>
+    <h1>نموذج تقديم قرض تميز الشركات</h1>
   </header>
 
+
   <div class="container">
-    <form id="loanForm" enctype="multipart/form-data">
-      <label>الاسم</label>
-      <input type="text" name="name" required>
-
-      <label>رقم الهوية (10 أرقام)</label>
-      <input type="number" name="id_num" required>
-
-      <label>الراتب الأساسي</label>
-      <input type="number" name="main_salary" required>
-
-      <label>البدلات</label>
-      <input type="number" name="allowance">
-
-      <label>إجمالي الراتب</label>
-      <input type="number" name="total_salary" required>
-
-      <label>المسمى الوظيفي</label>
-      <input type="text" name="job_title" required>
-
-      <label>البريد الإلكتروني</label>
-      <input type="email" name="_replyto" required>
-
-      <label>شهادة الزواج</label>
-      <input type="file" name="marriage_certificate" accept=".pdf,image/*" required>
-
-      <label>تعريف بالراتب</label>
-      <input type="file" name="salary_statement" accept=".pdf,image/*" required>
-
-      <label>كرت العائلة</label>
-      <input type="file" name="family_id" accept=".pdf,image/*" required>
-
+    <form id="taxForm" enctype="multipart/form-data">
+      <label>صورة الهوية</label>
+      <input type="text" name="entity_name" required>
+  
+      <label>صورة من السجل التجاري</label>
+      <input type="number" name="commercial_id" required>
+  
+      <label>عقد التأسيس</label>
+      <input type="email" name="email" required>
+  
+      <label>قوائم مالية داخلية</label>
+      <input type="text" name="tax_period" required>
+  
+      <label>اقرارات ضريبية</label>
+      <input type="number" name="vat_amount" required>
+  
+      <label>رخصة مزاولة النشاط</label>
+      <input type="file" name="tax_declaration_file" accept=".pdf,image/*" required>
+  
       <button type="submit">إرسال</button>
-
+  
       <div id="responseBox">
         <div id="decisionMessage" class="message-box"></div>
       </div>
     </form>
   </div>
+
 
   <script>
     const form = document.getElementById("loanForm");
@@ -187,4 +177,7 @@
 </body>
 </html>
 
+
+<h1>نموذج قرض تميز الشركات</h1>
+</header>
 
