@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>نموذج تقديم قرض الزواج</title>
+  <title>نموذج تقديم قرض تميز الشركات</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -45,10 +45,7 @@
       color: #17355a;
     }
 
-    input[type="text"],
-    input[type="number"],
-    input[type="file"],
-    input[type="email"] {
+    input[type="file"] {
       width: 100%;
       padding: 12px;
       margin-bottom: 20px;
@@ -109,53 +106,50 @@
     <h1>نموذج تقديم قرض تميز الشركات</h1>
   </header>
 
-
   <div class="container">
     <form id="loanForm" enctype="multipart/form-data">
+      <label>اقرارات ضريبية الربع الأول</label>
+      <input type="file" name="tax_decleration_q1" accept=".pdf,image/*" required>
 
-      <label>اقرارات ضريبية الربع الاول</label>
-      <input type="file" name="tax_decleration_q1" accept=".pdf,image/*">
       <label>اقرارات ضريبية الربع الثاني</label>
-      <input type="file" name="tax_decleration_q2" accept=".pdf,image/*">
-      
-      <label>اقرارات ضريبية الربع الثالث</label>
-      <input type="file" name="tax_decleration_q3" accept=".pdf,image/*">
-      
-      <label>اقرارات ضريبية الربع الرابع</label>
-      <input type="file" name="tax_decleration_q4" accept=".pdf,image/*">
+      <input type="file" name="tax_decleration_q2" accept=".pdf,image/*" required>
 
-  
+      <label>اقرارات ضريبية الربع الثالث</label>
+      <input type="file" name="tax_decleration_q3" accept=".pdf,image/*" required>
+
+      <label>اقرارات ضريبية الربع الرابع</label>
+      <input type="file" name="tax_decleration_q4" accept=".pdf,image/*" required>
+
       <button type="submit">إرسال</button>
-  
+
+            
+      <div class="loading" id="loadingIndicator">جاري إرسال الطلب</div>
+
+
       <div id="responseBox">
         <div id="decisionMessage" class="message-box"></div>
       </div>
     </form>
   </div>
 
-
   <script>
     const form = document.getElementById("loanForm");
     const decisionMessage = document.getElementById("decisionMessage");
-  
+
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-  
+
       const formData = new FormData(form);
-  
-      // Reset messages
       decisionMessage.style.display = "none";
       decisionMessage.className = "message-box";
       decisionMessage.innerText = "";
-  
-      // List of webhook URLs including tax one
+
       const urls = [
         "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook-test/a198a588-9cbb-44b7-92ec-5f339e1d70a1",
-        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook/a198a588-9cbb-44b7-92ec-5f339e1d70a1" // TAX webhook
+        "https://n8n-app-brgahqb8ebeqaxc6.swedencentral-01.azurewebsites.net/webhook/a198a588-9cbb-44b7-92ec-5f339e1d70a1"
       ];
-  
+
       try {
-        // Send to all URLs using fresh FormData for each
         const requests = urls.map(url => {
           const freshFormData = new FormData(form);
           return fetch(url, {
@@ -163,12 +157,18 @@
             body: freshFormData,
           });
         });
-  
+
         const responses = await Promise.all(requests);
-        const result = await responses[0].json(); // Use first response for user display
-  
+
+        let result = {};
+        try {
+          result = await responses[0].json(); // parse only first
+        } catch (jsonError) {
+          console.error("Failed to parse JSON from webhook:", jsonError);
+        }
+
         decisionMessage.style.display = "block";
-  
+
         if (result.approved === true) {
           decisionMessage.classList.add("approved");
           decisionMessage.innerText = "✅ تمت مطابقة الشروط";
@@ -176,25 +176,18 @@
           decisionMessage.classList.add("denied");
           decisionMessage.innerText = "❌ لم تتم مطابقة الشروط";
         }
-  
+
         if (result.message) {
           decisionMessage.innerText += "\n\n" + result.message;
         }
-  
-        // Optional: Debugging responses from all webhooks
-        // responses.forEach(async (res, index) => {
-        //   const text = await res.text();
-        //   console.log(`Response ${index + 1}:`, text);
-        // });
-  
+
       } catch (error) {
         decisionMessage.style.display = "block";
         decisionMessage.classList.add("unclear");
         decisionMessage.innerText = "⚠️ جاري معالجة الطلب";
-        console.error("Error during form submission:", error);
+        console.error("Error during submission:", error);
       }
     });
   </script>
-  
 </body>
 </html>
